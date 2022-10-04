@@ -1,56 +1,54 @@
 from collections import defaultdict
 
+from Customer import Customer
+
+
+class CustomerNotAllowedException(Exception):
+    info = ""
+    msg = ""
+
+    def __init__(self, info, msg):
+        self.info = info
+        self.msg = msg
+
+
+def create_obj(line):
+    customer = Customer()
+    for x in range(0, len(line)):
+        if x == 0:
+            customer.setLname(line[0].strip())
+        elif x == 1:
+            f_name = line[1].strip()
+            if '.' in f_name:
+                title = f_name.split('. ')
+                customer.setTitle(title[0])
+                customer.setFname(title[1])
+            else:
+                #   create customer not allowed object
+                raise CustomerNotAllowedException(line, ': customer not allowed')
+    return customer
+
 
 def read_file():
     file_path = 'FairDealCustomerData.csv'
     file_reader = open(file_path)
-
-    dict_list = []
-    prof_list = []
-    ddl = defaultdict(list)
-
+    cust_list = []
     try:
         for line in file_reader.readlines():
             sline = line.replace('\n', '').split(',', maxsplit=3)
-            print(sline)
-            dict_list.append(sline)
-
-            # if sline[1] not in prof_list:
-            #     prof_list.append(sline[1])  # list created
-        print(dict_list)
-        # for x in range(0, len(dict_list)):
-        #     for y in range(0, len(prof_list)):
-        #
-        #         if prof_list[y] in dict_list[x]:
-        #             ddl[prof_list[y]].append(dict_list[x])
-
+            s_line = create_obj(sline)
+            cust_list.append(s_line)
     finally:
         file_reader.close()
-        return ddl
-
-
-# def read_input():
-#     in_prompt = 'What is the profession?  '
-#     in_prompt += '\n'
-#     return input(in_prompt)
+    return cust_list
 
 
 def main():
-    profs_dict = read_file()
-    #print(profs_dict.values())
-    user_input = ''
-    # user_out
-    # while True:
-    #     try:
-    #         user_input = read_input()
-    #     except EOFError:
-    #         break
-    #     if user_input != '' and profs_dict[user_input] != '':
-    #         print('List per profession: ', user_input)
-    #         print(profs_dict[user_input])
-    #     else:
-    #         print('Invalid Response')
-    #     break
+    customers = read_file()
+    print('Customers:')
+    for c in range(len(customers)):
+        print(customers[c].getTitle(), customers[c].getFname(), customers[c].getLname())
+    print('\nNumber of Customers:', len(customers))
 
 
 if __name__ == "__main__":
