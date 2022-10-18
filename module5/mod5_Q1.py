@@ -23,6 +23,7 @@ y_data = hurricanes_data[0:100]
 fig = plt.figure(figsize=(25, 75))
 plt.ylabel(y_title)
 plt.xlabel(x_title)
+
 plt.title('Hurricanes in the US')
 
 plt.bar(x_data, y_data)
