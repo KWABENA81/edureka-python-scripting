@@ -1,39 +1,38 @@
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
 #   Read file
-hurricanes_data = pd.read_csv('CityTemps.csv', dtype=str, delimiter=',')
+hurricanes_data = pd.read_csv('inputs/CityTemps.csv', dtype=str, delimiter=',')
 
 #   capture headers of table
 hurricanes_data.head()
 df = pd.DataFrame(hurricanes_data)
-print(df)
-#
-year_data = df['Year']
-month_data = df['Month']
+        #print('data ', df)
+# extract the axis data
+x_axis = df['Year'] + '-' + df['Month']
+
+# year_header = year_data.head(0)
+x_axis_title = 'Year & Month'
+#print('\n\ndata ',x_axis_title)
 moscow_data = df['Moscow']
-melbourne_data = df['Melbourne']
+moscow_header = moscow_data.head(0)
+print('moscow_data\n', moscow_data)
 sanfrancisco_data = df['San Francisco']
-
-year_header= year_data.head(0)
-month_header = month_data.head(0)
-moscow_header= moscow_data.head(0)
-melbourne_header = melbourne_data.head(0)
-sanfrancisco_header = sanfrancisco_data.head(0)
-
-y_title = year_header.name
-x_title = month_header.name
-
-x_data = month_data[0:24]
-y_data = year_data[0:24]
+# sanfrancisco_header = sanfrancisco_data.head(0)
+# #
+# y_data = month_data[0:20]
+x_data = moscow_data[0:20]
+print('\n\ndata\n ', x_data)
 #
 fig = plt.figure(figsize=(25, 75))
-plt.ylabel(y_title)
-plt.xlabel(x_title)
-plt.title('Rain fall')
-#
-plt.hist(x_data, y_data)
+# # plt.ylabel(y_axis_title)
+plt.xlabel(x_axis_title)
+plt.xticks(rotation=70)
+plt.ylabel('Rainfall in inches')
+plt.title('Rainfall for San Francisco vs Moscow')
+plt.hist(moscow_data)
 plt.show()
 
 
-
+# #
