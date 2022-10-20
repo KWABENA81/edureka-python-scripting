@@ -2,7 +2,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 #   Read file
-hurricanes_data = pd.read_csv('Hurricanes.csv', dtype=str, delimiter=',')
+hurricanes_data = pd.read_csv('inputs/Hurricanes.csv', dtype=str, delimiter=',')
 
 #   capture headers of table
 hurricanes_data.head()
@@ -17,15 +17,17 @@ hurricanes_header = hurricanes_data.head(0)
 x_title = year_header.name
 y_title = hurricanes_header.name
 
-x_data = year_data[0:100]
-y_data = hurricanes_data[0:100]
+x_data = year_data[0:101]
+y_data = hurricanes_data[0:101]
 
-fig = plt.figure(figsize=(25, 75))
+fig = plt.figure(figsize=(25, 85))
 plt.ylabel(y_title)
 plt.xlabel(x_title)
+plt.xticks(rotation=70)
 
 plt.title('Hurricanes in the US')
 
 plt.bar(x_data, y_data)
+plt.savefig("mod5_Q1.jpg")
 plt.show()
 
