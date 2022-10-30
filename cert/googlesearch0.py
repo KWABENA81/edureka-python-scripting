@@ -18,26 +18,35 @@ with open("Output.txt", "w") as text_file:
   text_file.close()
 
 regex1='<h3 class=.*</h3'    # '<h3 class=.*</h3$'
-p_list = re.split(r"<h3 class=",response.decode('utf-8'))
+ptn=r'<h3 class=\".*\">.+</h3>'
+ptn0=r'<div class=".*</div></h3>'
+ptn1=r'<div class=".*><div class=".*</div></h3></div>'
+ptn2=r'(<div class=".*>){1}<h3 class=".*</div></h3></div>'
+ptn3=r'(<div class=".+><h3 class=".+><div class=").+(</div></h3></div>)'
+p_list = re.findall(ptn3, response.decode('utf-8'))
 
 plist0=[]
 plist1=[]
 
 for x in p_list:
-  if search_query.upper() in x.upper() and '</h3' in x: 
-    plist0.append(x)
+  ptn=r'<a href=".*</a>'
+  ystr = re.findall(ptn,x)
+  #if search_query in ystr:
+  plist0.append(ystr)
+  print(ystr)
 
-for y in plist0:
-    ys=re.split(r"</h3></div>",y) 
-    plist1.append(ys)
+# for y in plist0:
+#     ys=re.split(r"</h3></div>",y) 
+#     plist1.append(ys)
       
-    count=0
-for yy in plist1:
-  count+=1
-  print(count,'\n',yy,'\n\n')
-  if count >=10:
-    break
+#     count=0ptn,x)
+# for yy in plist1:
+#   count+=1
+#   print(count,'\n',yy,'\n\n')
+#   if count >=10:
+#     break
 
+#print(p_list0)
   
 #print(p.findall(response.decode('utf-8')))
 
