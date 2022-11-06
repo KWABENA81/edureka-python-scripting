@@ -1,6 +1,6 @@
 import argparse
 
-import googlesearch
+import google_search_topic
 
 
 def greet(args):
