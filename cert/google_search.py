@@ -1,6 +1,4 @@
 import re
-from builtins import set
-
 import requests
 
 
@@ -10,22 +8,17 @@ def search(search_query):
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"
     }
 
-    # if search_query == '':
-    #     search_query = 'canada'
-
-    url = 'https://www.google.com/search?q='    +  search_query
-
+    url = 'https://www.google.com/search?q=' + search_query
     response = requests.get(url, headers=headers).content
-    with open("Output.txt", "w") as text_file:
+    with open("temp.txt", "w") as text_file:
         text_file.write(response.decode('utf-8'))
         text_file.close()
 
     p_list = re.split(r'<h3 class=', response.decode('utf-8'))
-
     p_list0 = []
 
     for x in p_list:
-        if '</h3>' in x:  #if search_query in x and '</h3' in x:
+        if search_query.upper() in x.upper() and '</h3' in x:
             p_list0.append(x)
 
     p_list1 = []
@@ -47,15 +40,14 @@ def search(search_query):
             break
 
     p_list3 = []
+    rpattern = r'^(<div class="BNeawe vvjwJb AP7Wnd UwRFLe" style="-webkit-line-clamp:2">)'
     for x in range(len(p_list2)):
         wd = ''.join(p_list2[x])
-
-        nword = re.sub(r'^(<div class="BNeawe vvjwJb AP7Wnd UwRFLe" style="-webkit-line-clamp:2">)', '', wd, count=1)
+        nword = re.sub(rpattern, '', wd, count=1)
 
         word = re.sub(r'(</div>.*)$', '', nword)
         if re.search(r'(<|>|#)', word):
             continue
         else:
-            # p_list3.append(word)
-            print(word)
-    # return p_list3
+            p_list3.append(word)
+    return p_list3
