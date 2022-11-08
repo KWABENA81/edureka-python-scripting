@@ -1,16 +1,19 @@
 # Q2: Create a script called location that return the location parameters of any location you want.
+#       Providing this alternate solution, since question did not clarify how to solve this.
+import argparse
 import re
 import requests
 
 
-def search(search_str):
+def loc_search(search_str):
     headers = {
         "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"
             " Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"
     }
 
-    url = 'https://maps.google.com?q=' + search_str
+    sch_str=''.join(search_str)
+    url = 'https://maps.google.com?q=' + ''.join(search_str)
     response = requests.get(url, headers=headers).content
     with open("temp_loc.txt", "w") as text_file:
         text_file.write(response.decode('utf-8'))
@@ -32,8 +35,19 @@ def search(search_str):
     return loc_array
 
 
+parser = argparse.ArgumentParser(prog='location_alt',
+                                 description='Provide the Long & Lat of a given location')
+parser.add_argument(dest='input', metavar='\"location item\"', nargs='+',
+                    help='the location', type=str)
+args = parser.parse_args()
+
 if __name__ == '__main__':
-    arr_value = search('accra')
+    args = parser.parse_args()
+    arr_value = loc_search(args.input)
 
     location_parameter = {'latitude': arr_value[0], 'longitude': arr_value[1]}
-    print(arr_value, '\n', location_parameter)
+    print(arr_value, '\t', location_parameter)
+
+
+
+
