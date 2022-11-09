@@ -1,13 +1,12 @@
 # Q1:   Create a python script called googlesearch that provides a command line utility
 #       to perform google search. It gives you the top links (search results) of whatever
 #       you want to search on google.
-import argparse
-import re
 
+import re
 import requests
 
 
-def google_search(search_query):
+def search(search_query):
     search_string = ''
     for res in search_query:
         res = ''.join(res)
@@ -22,6 +21,9 @@ def google_search(search_query):
 
     url = 'https://www.google.com/search?q=' + search_string
     response = requests.get(url, headers=headers).content
+    with open("temp.txt", "w") as text_file:
+        text_file.write(response.decode('utf-8'))
+        text_file.close()
 
     results_list0 = re.split(r'<h3 class=', response.decode('utf-8'))
 
@@ -60,15 +62,3 @@ def google_search(search_query):
         else:
             results_list4.append(word)
     return results_list4
-
-
-parser = argparse.ArgumentParser(prog='googlesearch', description='Perform CLI Google search')
-parser.add_argument(dest='input', metavar='\"search item\"', nargs='+',
-                    help='the topic to search in googlesearch', type=str)
-args = parser.parse_args()
-
-if __name__ == '__main__':
-    args = parser.parse_args()
-    results = google_search(args.input)
-    for res in results:
-        print(res)
